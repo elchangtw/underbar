@@ -7,6 +7,7 @@
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
 
   /**
@@ -37,6 +38,7 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
+    return n === undefined ? array[array.length-1] : array.slice(Math.max(array.length-n, 0), array.length);
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -45,6 +47,17 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+    if( Array.isArray(collection) ){
+      for(var i=0; i<collection.length; i++){
+        iterator(collection[i], i, collection);
+      }
+    }
+    else{
+      for(var i in collection){
+        iterator(collection[i], i, collection);
+      }
+    }
+    //for(int i=0; i<collection.length; i++){
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -66,16 +79,50 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var results = [];
+
+    _.each(collection, function(item, index) {
+      if( test(item) ) {
+        results.push(item);
+      }
+    });
+
+    return results;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+
+    return _.filter(collection, function(item, index){ return !test(item) });
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    var results = [];
+
+    if( isSorted ){
+      var current;
+      for(var i=0; i<array.length; i++){
+        var val = array[i];
+        if( val!==current ){
+          results.push(val);
+          current = val;
+        }
+      }
+      console.log("test");
+      return results;
+    }
+
+    _.each(array, function(item, index) {
+      var seen = _.indexOf(results, item);
+      if(seen === -1){
+        results.push(item);
+      }
+    });
+
+    return results;
   };
 
 
