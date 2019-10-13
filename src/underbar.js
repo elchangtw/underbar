@@ -327,15 +327,15 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    debugger;
     var cache = {};
-
     return function(){
-      var args = Array.prototype.slice.call(arguments);
+      var args = JSON.stringify(Array.prototype.slice.call(arguments));
 
       //if(!cache[arguments]){
       if(!cache[args]){
         //cache[arguments] = func.apply(this, arguments);
-        cache[args] = func.apply(this, arguments);
+        cache[args] = func.apply(null, arguments);
       }
       return cache[args];
     };
