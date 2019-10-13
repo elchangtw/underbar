@@ -211,7 +211,7 @@
       if(pass === false){
         return false;
       }
-      return iterator(item);
+      return !!iterator(item);
     }, pass);
   };
 
