@@ -106,7 +106,7 @@
     if( isSorted ){
       var current;
 
-      _.each(array, function(item, iterator) {
+      _.each(array, function(item) {
         if( item!==current ){
           results.push(item);
           current = item;
@@ -116,17 +116,13 @@
       return results;
     }
     */
-    //not sorted, no iterator transformation
 
-    
+    //not sorted, no iterator transformation
     if(iterator == undefined){
       _.each(array, function(item, iterator) {
         var seen = _.indexOf(results, item);
-        //iterator(item);
-        //var seen = _.indexOf(cache, iterator(item));
         if(seen === -1){
           results.push(item);
-          //cache.push(iterator(item));
         }
       });      
       return results;
@@ -144,9 +140,6 @@
       });
       return results;
     }
-
-
-
   };
 
 
@@ -337,10 +330,14 @@
     var cache = {};
 
     return function(){
-      if(!cache[arguments]){
-        cache[arguments] = func.apply(this, arguments);
+      var args = Array.prototype.slice.call(arguments);
+
+      //if(!cache[arguments]){
+      if(!cache[args]){
+        //cache[arguments] = func.apply(this, arguments);
+        cache[args] = func.apply(this, arguments);
       }
-      return cache[arguments];
+      return cache[args];
     };
   };
 
@@ -351,8 +348,9 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.call(arguments, 2);
     setTimeout(function(){
-      func.apply(this, arguments);
+      func.apply(this, args);
     }, wait);
   };
 
@@ -369,7 +367,8 @@
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
     var copy = array.slice();
-    var result = [];for (var i = 0; i < array.length; i++){
+    var result = [];
+    for (var i = 0; i < array.length; i++){
       var pick = Math.round(Math.random() * copy.length);
       result.push(copy[pick]);
       copy.splice(pick, 1);
