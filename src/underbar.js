@@ -203,12 +203,28 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    if(iterator===undefined){
+      iterator = function(iterator){ return iterator; };
+    }
+    var pass = true;
+    return _.reduce(collection, function(pass, item){
+      if(pass === false){
+        return false;
+      }
+      return iterator(item);
+    }, pass);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if(iterator===undefined){
+      iterator = function(iterator){ return iterator; };
+    }
+    return !_.every(collection, function(item){
+      return !iterator(item);
+    });
   };
 
 
@@ -231,11 +247,25 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    _.each(arguments, function(item){
+      _.each(item, function(value, key){
+        obj[key] = value;
+      });
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    _.each(arguments, function(item){
+      _.each(item, function(value, key){
+        if(obj[key]===undefined){
+          obj[key] = value;
+        }
+      });
+    });
+    return obj;
   };
 
 
@@ -279,6 +309,13 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var cache = {};
+
+    return function(){
+      if(!cache[arguments]){
+        cache[arguments] = func.apply(this, arguments);
+      }
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -288,6 +325,9 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    setTimeout(function(){
+      func.apply(this, arguments);
+    }, wait);
   };
 
 
