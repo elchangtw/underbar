@@ -57,7 +57,6 @@
         iterator(collection[i], i, collection);
       }
     }
-    //for(int i=0; i<collection.length; i++){
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
