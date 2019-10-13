@@ -102,6 +102,7 @@
     var results = [];
 
     //sorted here
+    /*
     if( isSorted ){
       var current;
 
@@ -111,18 +112,41 @@
           current = item;
         }
       });
+      return "a";
+      return results;
+    }
+    */
+    //not sorted, no iterator transformation
+
+    
+    if(iterator == undefined){
+      _.each(array, function(item, iterator) {
+        var seen = _.indexOf(results, item);
+        //iterator(item);
+        //var seen = _.indexOf(cache, iterator(item));
+        if(seen === -1){
+          results.push(item);
+          //cache.push(iterator(item));
+        }
+      });      
       return results;
     }
 
-    //not sorted here
-    _.each(array, function(item, iterator) {
-      var seen = _.indexOf(results, item);
-      if(seen === -1){
-        results.push(item);
-      }
-    });
+    //not sorted, iterator
+    if(iterator !== undefined){
+      var cache = [];
+      _.each(array, function(item) {
+        var seen = _.indexOf(cache, iterator(item));
+        if(seen === -1){
+          results.push(item);
+          cache.push(iterator(item));
+        }
+      });
+      return results;
+    }
 
-    return results;
+
+
   };
 
 
@@ -211,6 +235,7 @@
       if(pass === false){
         return false;
       }
+      //!! casts result to boolean
       return !!iterator(item);
     }, pass);
   };
