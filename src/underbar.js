@@ -102,20 +102,21 @@
   _.uniq = function(array, isSorted, iterator) {
     var results = [];
 
+    //sorted here
     if( isSorted ){
       var current;
-      for(var i=0; i<array.length; i++){
-        var val = array[i];
-        if( val!==current ){
-          results.push(val);
-          current = val;
+
+      _.each(array, function(item, iterator) {
+        if( item!==current ){
+          results.push(item);
+          current = item;
         }
-      }
-      console.log("test");
+      });
       return results;
     }
 
-    _.each(array, function(item, index) {
+    //not sorted here
+    _.each(array, function(item, iterator) {
       var seen = _.indexOf(results, item);
       if(seen === -1){
         results.push(item);
