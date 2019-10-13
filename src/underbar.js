@@ -344,11 +344,10 @@
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
     var copy = array.slice();
-    var result = [];
-    while( copy.length>0 ){
-      var pick = Math.round( Math.random() * copy.length );
-      result.push( copy[pick] );
-      copy.splice( pick, 1 );
+    var result = [];for (var i = 0; i < array.length; i++){
+      var pick = Math.round(Math.random() * copy.length);
+      result.push(copy[pick]);
+      copy.splice(pick, 1);
     }
     return result;
   };
