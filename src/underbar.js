@@ -369,7 +369,7 @@
     var copy = array.slice();
     var result = [];
     for (var i = 0; i < array.length; i++){
-      var pick = Math.round(Math.random() * copy.length);
+      var pick = Math.floor(Math.random() * copy.length);
       result.push(copy[pick]);
       copy.splice(pick, 1);
     }
